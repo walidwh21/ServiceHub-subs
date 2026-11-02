@@ -1,0 +1,17 @@
+{% extends "app_base.html" %}
+{% block app %}
+<h1>Support tickets</h1>
+<p class="sub">Questions from {{ t.customers|lower }}.</p>
+<div class="tablewrap"><table>
+  <thead><tr><th>{{ t.customer }}</th><th>Subject</th><th>Message</th><th>Status</th><th></th></tr></thead>
+  <tbody>
+  {% for k in object_list %}
+    <tr><td>{{ k.customer.get_full_name|default:k.customer.username }}</td><td><strong>{{ k.subject }}</strong></td><td class="wrapcell">{{ k.message|truncatechars:90 }}</td>
+    <td><span class="badge {{ k.status }}">{{ k.get_status_display }}</span></td>
+    <td class="actions"><a class="btn small outline" href="{% url 'catalog:ticket-respond' k.pk %}">Respond</a></td></tr>
+  {% empty %}
+    <tr><td colspan="5" class="empty">No tickets.</td></tr>
+  {% endfor %}
+  </tbody>
+</table></div>
+{% endblock %}

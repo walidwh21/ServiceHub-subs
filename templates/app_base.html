@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="shell">
+  <aside class="sidebar">
+    <div class="who">{{ user.first_name|default:user.username }}<small>{% if user.is_staff %}Administrator{% else %}{{ t.customer }}{% endif %}</small></div>
+    {% with page=request.resolver_match.url_name %}
+    <a class="{% if page == 'dashboard' %}active{% endif %}" href="{% url 'catalog:dashboard' %}">Dashboard</a>
+    {% if user.is_staff %}
+      <a class="{% if page == 'customer-list' %}active{% endif %}" href="{% url 'catalog:customer-list' %}">{{ t.customers }}</a>
+      <a class="{% if page == 'category-list' %}active{% endif %}" href="{% url 'catalog:category-list' %}">{{ t.categories }}</a>
+      <a class="{% if page == 'offering-list' %}active{% endif %}" href="{% url 'catalog:offering-list' %}">{{ t.offerings }}</a>
+      <a class="{% if page == 'request-list' %}active{% endif %}" href="{% url 'catalog:request-list' %}">{{ t.requests }}</a>
+      <a class="{% if page == 'ticket-list' %}active{% endif %}" href="{% url 'catalog:ticket-list' %}">Support tickets</a>
+    {% else %}
+      <a class="{% if page == 'browse' %}active{% endif %}" href="{% url 'catalog:browse' %}">Browse {{ t.offerings|lower }}</a>
+      <a class="{% if page == 'my-requests' %}active{% endif %}" href="{% url 'catalog:my-requests' %}">My {{ t.requests|lower }}</a>
+      <a class="{% if page == 'my-tickets' %}active{% endif %}" href="{% url 'catalog:my-tickets' %}">Support</a>
+    {% endif %}
+    {% endwith %}
+  </aside>
+  <section class="main">{% block app %}{% endblock %}</section>
+</div>
+{% endblock %}

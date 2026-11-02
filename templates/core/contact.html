@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+{% block title %}Contact - {{ brand.name }}{% endblock %}
+{% block content %}
+<div class="wrap"><div class="formcard center">
+  <h1>Contact us</h1>
+  <form method="post">{% csrf_token %}{{ form.as_div }}<button class="btn" type="submit">Send message</button></form>
+</div></div>
+{% endblock %}

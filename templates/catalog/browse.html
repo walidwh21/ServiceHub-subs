@@ -1,0 +1,23 @@
+{% extends "app_base.html" %}
+{% block app %}
+<h1>Browse {{ t.offerings|lower }}</h1>
+<p class="sub">Pick one and send a {{ t.request|lower }}.</p>
+<div class="tabs">
+  <a class="{% if not current_category %}active{% endif %}" href="{% url 'catalog:browse' %}">All</a>
+  {% for c in categories %}<a class="{% if current_category == c.pk|stringformat:'s' %}active{% endif %}" href="?category={{ c.pk }}">{{ c.name }}</a>{% endfor %}
+</div>
+<div class="grid">
+  {% for o in offerings %}
+  <article class="card">
+    <div class="meta">{{ o.category.name }}</div>
+    <h3>{{ o.name }}</h3>
+    <div class="price">{{ currency }}{{ o.price|floatformat:"-2" }}</div>
+    <div class="meta">for {{ o.duration_months }} month(s)</div>
+    <p>{{ o.description }}</p>
+    <form method="post" action="{% url 'catalog:create-request' o.pk %}">{% csrf_token %}<button class="btn" type="submit">{{ t.action }}</button></form>
+  </article>
+  {% empty %}
+  <div class="empty">Nothing available right now.</div>
+  {% endfor %}
+</div>
+{% endblock %}

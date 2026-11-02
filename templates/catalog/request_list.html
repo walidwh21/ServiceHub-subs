@@ -1,0 +1,28 @@
+{% extends "app_base.html" %}
+{% block app %}
+<h1>{{ t.requests }}</h1>
+<p class="sub">Approve or reject what customers have asked for.</p>
+<div class="tabs">
+  <a class="{% if not current_status %}active{% endif %}" href="{% url 'catalog:request-list' %}">All</a>
+  <a class="{% if current_status == 'pending' %}active{% endif %}" href="?status=pending">Pending</a>
+  <a class="{% if current_status == 'approved' %}active{% endif %}" href="?status=approved">Approved</a>
+  <a class="{% if current_status == 'rejected' %}active{% endif %}" href="?status=rejected">Rejected</a>
+</div>
+<div class="tablewrap"><table>
+  <thead><tr><th>{{ t.customer }}</th><th>{{ t.offering }}</th><th>{{ t.category }}</th><th>Date</th><th>Status</th><th></th></tr></thead>
+  <tbody>
+  {% for r in object_list %}
+    <tr><td>{{ r.customer.get_full_name|default:r.customer.username }}</td><td>{{ r.offering.name }}</td><td>{{ r.offering.category.name }}</td><td>{{ r.created_at|date:"M d, Y" }}</td>
+    <td><span class="badge {{ r.status }}">{{ r.get_status_display }}</span></td>
+    <td class="actions">
+      {% if r.status == 'pending' %}
+      <form method="post" action="{% url 'catalog:request-decide' r.pk 'approve' %}">{% csrf_token %}<button class="btn small good" type="submit">Approve</button></form>
+      <form method="post" action="{% url 'catalog:request-decide' r.pk 'reject' %}">{% csrf_token %}<button class="btn small danger" type="submit">Reject</button></form>
+      {% endif %}
+    </td></tr>
+  {% empty %}
+    <tr><td colspan="6" class="empty">No {{ t.requests|lower }} found.</td></tr>
+  {% endfor %}
+  </tbody>
+</table></div>
+{% endblock %}

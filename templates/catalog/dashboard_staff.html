@@ -1,0 +1,26 @@
+{% extends "app_base.html" %}
+{% block app %}
+<h1>Dashboard</h1>
+<p class="sub">Overview of {{ t.requests|lower }}, {{ t.customers|lower }} and support.</p>
+<div class="stats">
+  <div class="stat"><b>{{ customers }}</b><span>{{ t.customers }}</span></div>
+  <div class="stat"><b>{{ categories }}</b><span>{{ t.categories }}</span></div>
+  <div class="stat"><b>{{ offerings }}</b><span>{{ t.offerings }}</span></div>
+  <div class="stat"><b>{{ total_requests }}</b><span>Total {{ t.requests|lower }}</span></div>
+  <div class="stat warn"><b>{{ counts.pending }}</b><span>Pending</span></div>
+  <div class="stat ok"><b>{{ counts.approved }}</b><span>Approved</span></div>
+  <div class="stat bad"><b>{{ counts.rejected }}</b><span>Rejected</span></div>
+  <div class="stat warn"><b>{{ open_tickets }}</b><span>Open tickets</span></div>
+</div>
+<div class="toolbar"><h2 style="margin:0;font-size:20px">Latest {{ t.requests|lower }}</h2><a class="btn small" href="{% url 'catalog:request-list' %}">View all</a></div>
+<div class="tablewrap"><table>
+  <thead><tr><th>{{ t.customer }}</th><th>{{ t.offering }}</th><th>Date</th><th>Status</th></tr></thead>
+  <tbody>
+  {% for r in recent %}
+    <tr><td>{{ r.customer.get_full_name|default:r.customer.username }}</td><td>{{ r.offering.name }}</td><td>{{ r.created_at|date:"M d, Y" }}</td><td><span class="badge {{ r.status }}">{{ r.get_status_display }}</span></td></tr>
+  {% empty %}
+    <tr><td colspan="4" class="empty">Nothing yet.</td></tr>
+  {% endfor %}
+  </tbody>
+</table></div>
+{% endblock %}

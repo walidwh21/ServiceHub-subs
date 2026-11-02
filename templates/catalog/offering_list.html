@@ -1,0 +1,16 @@
+{% extends "app_base.html" %}
+{% block app %}
+<div class="toolbar"><div><h1>{{ t.offerings }}</h1><p class="sub" style="margin:0">Everything customers can request.</p></div><a class="btn" href="{% url 'catalog:offering-create' %}">Add {{ t.offering|lower }}</a></div>
+<div class="tablewrap"><table>
+  <thead><tr><th>Name</th><th>{{ t.category }}</th><th>Price</th><th>Months</th><th>Status</th><th></th></tr></thead>
+  <tbody>
+  {% for o in object_list %}
+    <tr><td><strong>{{ o.name }}</strong></td><td>{{ o.category.name }}</td><td>{{ currency }}{{ o.price|floatformat:"-2" }}</td><td>{{ o.duration_months }}</td>
+    <td>{% if o.is_active %}<span class="badge active">Active</span>{% else %}<span class="badge inactive">Hidden</span>{% endif %}</td>
+    <td class="actions"><a class="btn small outline" href="{% url 'catalog:offering-update' o.pk %}">Edit</a><a class="btn small danger" href="{% url 'catalog:offering-delete' o.pk %}">Delete</a></td></tr>
+  {% empty %}
+    <tr><td colspan="6" class="empty">Nothing here yet.</td></tr>
+  {% endfor %}
+  </tbody>
+</table></div>
+{% endblock %}

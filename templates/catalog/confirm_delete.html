@@ -1,0 +1,9 @@
+{% extends "app_base.html" %}
+{% block app %}
+<h1>Please confirm</h1>
+<p class="sub">This action cannot be undone.</p>
+<div class="formcard">
+  <p>Delete <strong>{{ object }}</strong>? Anything linked to it will be removed too.</p>
+  <form method="post">{% csrf_token %}<button class="btn danger" type="submit">Yes, delete</button> <a class="btn outline" href="javascript:history.back()">Cancel</a></form>
+</div>
+{% endblock %}

@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block title %}About - {{ brand.name }}{% endblock %}
+{% block content %}
+<section class="wrap section">
+  <h2>About {{ brand.name }}</h2>
+  <div class="card"><p>{{ brand.tagline }}</p>
+  <p>This is a general-purpose plan and request management portal. Administrators publish {{ t.offerings|lower }}, {{ t.customers|lower }} send {{ t.requests|lower }}, and every decision is tracked in one place.</p>
+  <a class="btn" href="{% url 'core:contact' %}">Contact us</a></div>
+</section>
+{% endblock %}

@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="hero"><div class="wrap">
+  <h1>{{ brand.hero_title }}</h1>
+  <p>{{ brand.hero_text }}</p>
+  <div class="cta">
+    {% if user.is_authenticated %}
+      <a class="btn" href="{% url 'catalog:dashboard' %}">Open dashboard</a>
+    {% else %}
+      <a class="btn" href="{% url 'accounts:signup' %}">Create an account</a>
+      <a class="btn ghost" href="{% url 'accounts:login' %}">Log in</a>
+    {% endif %}
+  </div>
+</div></section>
+<section class="wrap section">
+  <h2>Popular {{ t.offerings|lower }}</h2>
+  <div class="grid">
+    {% for o in featured %}
+    <article class="card">
+      <div class="meta">{{ o.category.name }}</div>
+      <h3>{{ o.name }}</h3>
+      <div class="price">{{ currency }}{{ o.price }}</div>
+      <div class="meta">for {{ o.duration_months }} month(s)</div>
+      <p>{{ o.description }}</p>
+    </article>
+    {% endfor %}
+  </div>
+</section>
+<section class="wrap section">
+  <h2>How it works</h2>
+  <div class="grid">
+    <div class="step"><b>1</b><div><h3>Browse</h3><p>Look through every available {{ t.offering|lower }}, grouped by {{ t.category|lower }}.</p></div></div>
+    <div class="step"><b>2</b><div><h3>{{ t.request }}</h3><p>Send a {{ t.request|lower }} with one click. No paperwork.</p></div></div>
+    <div class="step"><b>3</b><div><h3>Track</h3><p>Follow the status in your dashboard and ask questions any time.</p></div></div>
+  </div>
+</section>
+{% endblock %}

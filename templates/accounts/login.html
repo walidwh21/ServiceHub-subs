@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block title %}Log in - {{ brand.name }}{% endblock %}
+{% block content %}
+<div class="wrap"><div class="formcard center">
+  <h1>Log in</h1>
+  <form method="post">{% csrf_token %}{{ form.as_div }}<button class="btn" type="submit">Log in</button></form>
+  <p class="sub" style="margin-top:18px">No account yet? <a href="{% url 'accounts:signup' %}">Sign up</a></p>
+</div></div>
+{% endblock %}
